@@ -6,6 +6,7 @@ public class Hel {
 		// TODO Auto-generated method stub
 		System.out.println("하이하이!!");
 		System.out.println("헤헤헤헤헤!!");
+		System.out.println("룽메룽메!!");
 		
 	}
 
