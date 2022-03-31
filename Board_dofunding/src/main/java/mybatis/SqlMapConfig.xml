@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+		<typeAlias type="board.model.BoardBean" alias="MyBoard"/>
+		<typeAlias type="member.model.MemberBean" alias="MyMember"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="mybatis/board.xml"/>
+		<mapper resource="mybatis/member.xml"/>
+	</mappers>
+</configuration>
+
+<!-- SqlMapConfig.xml -->

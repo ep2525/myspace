@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board.model.Board">
+
+	<select id="GetArticleCount" resultType="int">
+		select count(*) from board
+		<if test="whatColumn == 'writer'">
+			where writer like #{keyword}
+		</if>
+		<if test="whatColumn == 'subject'">
+			where subject like #{keyword}
+		</if>
+		<if test="whatColumn == 'content'">
+			where content like #{keyword}
+		</if>
+	</select>
+	
+	
+	<select id="GetArticles" resultType="MyBoard">
+		select num, writer, email, subject, passwd, reg_date, readcount, ref, re_step, re_level, content, ip 	        
+			from (select rownum as rank, num, writer, email, subject, passwd, reg_date, readcount, ref, re_step, re_level, content, ip 
+			from (select num, writer, email, subject, passwd, reg_date, readcount, ref, re_step, re_level, content, ip 
+			from board 
+		<if test="whatColumn=='writer'">
+			where writer like #{keyword}
+		</if>
+		<if test="whatColumn=='subject'">
+			where subject like #{keyword}
+		</if>
+		<if test="whatColumn=='content'">
+			where content like #{keyword}
+		</if>
+			order by ref desc, re_step asc )) 
+	</select>
+	
+	
+	<insert id="InsertArticle">
+		insert into board
+		(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+		values
+		(board_seq.nextval,#{writer},#{email},#{subject},#{passwd},#{reg_date},board_seq.currval,0,0,#{content},#{ip})
+ 	</insert>	
+ 	
+ 	
+ 	<update id="UpdateReadCount">
+ 		update board set readcount=readcount+1 where num=#{num}	
+ 	</update>
+ 	
+
+ 	<select id="GetArticle" resultType="MyBoard">
+ 		select * from board where num=#{num}
+ 	</select>
+
+
+	<select id="GetArticlePasswd" resultType="String">
+		select passwd from board where num=#{num}
+	</select>
+	<update id="UpdateArticle">
+		update board set email=#{email},subject=#{subject},content=#{content}
+		where num=#{num}	
+	</update>
+
+	
+	<delete id="DeleteArticle">
+		delete board where num=#{num}
+	</delete>
+
+	
+	<update id="ReplyPlus">
+		update board set re_step=re_step+1 
+		where ref= #{ref} and re_step> #{re_step}
+	</update>
+	<insert id="ReplyArticle">
+		insert into board
+		(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+		values
+		(board_seq.nextval,#{writer},#{email},#{subject},#{passwd},#{reg_date},#{ref},#{re_step}+1,#{re_level}+1,#{content},#{ip})
+ 	</insert>	
+	
+<!-- 	<select id="GetProduct" resultType="MyProduct">
+ 		select * from products where num=#{num}	
+ 	</select>
+	
+	
+	
+	<update id="StockUpdate">
+		update products set stock=stock-#{stock} where num=#{num}
+	</update> -->
+	
+</mapper>
+
+<!-- product.xml -->
+
+
